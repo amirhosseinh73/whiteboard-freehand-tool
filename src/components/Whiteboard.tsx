@@ -1,5 +1,7 @@
 import { useRef } from "react";
 import { WhiteboardStyled } from "./WhiteboardStyled";
+import { Paths } from "../types";
+import { drawPathsWithPoints } from "../utils";
 
 const getRandomColor = function () {
   const COLORS = [
@@ -18,12 +20,6 @@ const getRandomColor = function () {
   return COLORS[rand];
 };
 
-type Point = { x: number; y: number };
-type Paths = {
-  pathIndex: number;
-  points: Point[];
-}[];
-
 export const Whiteboard = function () {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -32,24 +28,6 @@ export const Whiteboard = function () {
   const paths = useRef<Paths>([]);
 
   const color = useRef(getRandomColor());
-
-  const drawPathsWithPoints = (paths: Paths) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    paths.forEach((path) => {
-      ctx.beginPath();
-      ctx.moveTo(path.points[0].x, path.points[0].y);
-
-      for (let i = 1; i < path.points.length; i++) {
-        ctx.lineTo(path.points[i].x, path.points[i].y);
-      }
-      ctx.stroke();
-    });
-  };
 
   return (
     <div className="size-full p-4">
@@ -76,9 +54,11 @@ export const Whiteboard = function () {
         </button>
         <button
           onClick={() => {
-            paths.current.splice(-1, 1);
+            const canvas = canvasRef.current;
+            if (!canvas) return;
 
-            drawPathsWithPoints(paths.current);
+            paths.current.splice(-1, 1);
+            drawPathsWithPoints(paths.current, canvas);
           }}
           type="button"
           className="ml-2 bg-yellow-500 text-white hover:bg-yellow-400 rounded-md py-2 px-4"

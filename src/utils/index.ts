@@ -1,0 +1,1 @@
+export { drawPathsWithPoints } from "./drawPathsWithPoints";
