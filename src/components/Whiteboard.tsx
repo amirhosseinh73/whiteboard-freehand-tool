@@ -1,24 +1,7 @@
 import { useRef } from "react";
 import { WhiteboardStyled } from "./WhiteboardStyled";
 import { Paths } from "../types";
-import { drawPathsWithPoints } from "../utils";
-
-const getRandomColor = function () {
-  const COLORS = [
-    "red",
-    "yellow",
-    "khaki",
-    "cyan",
-    "blue",
-    "darkgray",
-    "black",
-    "violet",
-  ];
-
-  const rand = Math.floor(Math.random() * COLORS.length);
-
-  return COLORS[rand];
-};
+import { drawPathsWithPoints, getRandomColor } from "../utils";
 
 export const Whiteboard = function () {
   const canvasRef = useRef<HTMLCanvasElement>(null);
